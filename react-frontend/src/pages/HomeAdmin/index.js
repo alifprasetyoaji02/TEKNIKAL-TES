@@ -11,13 +11,19 @@ const HomeAdmin = () => {
     const [dataProd, setProduct] = useState([])
     const history = useHistory();
 
+    async function getAllProduct(){
+        try {
+            const resp = await axios.get('http://192.168.0.121:4000/v1/products/allProduct')
+            setProduct(resp.data.data)
+
+        } catch(err){
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
       
-      axios.get('http://192.168.0.121:4000/v1/products/allProduct').then(result => {
-        setProduct(result.data.data)
-      })
-      .catch(err => {
-      })
+        getAllProduct()
 
     })
     

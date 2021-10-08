@@ -11,13 +11,18 @@ const Category = () => {
     const [dataCat, setCategory] = useState([])
     const history = useHistory();
 
+    async function getAllCategory(){
+        try{
+            const resp = await axios.get('http://192.168.0.121:4000/v1/category/getCategory')
+            setCategory(resp.data.data)
+        } catch (err){
+            console.log(err)
+        }
+    }
+
     useEffect(() => {
       
-        axios.get('http://192.168.0.121:4000/v1/category/getCategory').then(result => {
-            setCategory(result.data.data)
-        })
-        .catch(err => {
-        })
+        getAllCategory()
 
     })
     

@@ -22,7 +22,7 @@ const ListCategoryAdmin = (props) => {
             axios.post('http://192.168.0.121:4000/v1/category/deleteCategory',formData,{"Content-Type": "multipart/form-data" })
             .then(result => {
                 console.log(result.data)
-                history.push('/admin/category')
+                history.push('/admin')
             })
             .catch(err => console.log(err))
           }

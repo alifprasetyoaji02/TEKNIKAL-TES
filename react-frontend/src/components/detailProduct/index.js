@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 import axios from 'axios'
 import { useCart } from 'react-use-cart';
@@ -63,16 +63,19 @@ const DetailProduct = (props) => {
     
     const[detailProduct,setDetailProduct] = useState([])
     const { addItem } = useCart()
+    
+    async function getDetailProduct() {
 
-    useEffect(() => {
-        const _id = props.match.params.id
-        
-        axios.get(`http://192.168.0.121:4000/v1/products/productById/${_id}`)
-        .then(result => {
-            setDetailProduct(result.data.data)        
-        })
-        .catch(err => console.log(err))
-    },)
+        try {  
+          const _id = props.match.params.id
+          const resp = await axios.get(`http://192.168.0.121:4000/v1/products/productById/${_id}`)
+          setDetailProduct(resp.data.data)        
+
+        } catch (err) {
+          console.log(err)
+        }
+    }
+    getDetailProduct()
 
     return(
         <Container style={{marginLeft:'10%',marginRight:'10%'}}>

@@ -1,27 +1,41 @@
 import { Grid } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Category from "../../components/category";
 import ListProduct from "../../components/listProduct";
 import axios from "axios";
+
+
+
+
 const Home = () => {
 
     const [dataCat, setCategory] = useState([])
     const [dataProd, setProduct] = useState([])
 
-    useEffect(() => {
-  
-     axios.get('http://192.168.0.121:4000/v1/category/getCategory').then(result => {
-        setCategory(result.data.data)
-      })
-      .catch(err => {
-      })
-      
-      axios.get('http://192.168.0.121:4000/v1/products/allProduct').then(result => {
-        setProduct(result.data.data)
-      })
-      .catch(err => {
-      })
+    async function getAllProduct(){
 
+        try {
+            const resp = await axios.get('http://192.168.0.121:4000/v1/products/allProduct')
+            setProduct(resp.data.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    async function getAllCategory(){
+
+        try {
+            const resp = await axios.get('http://192.168.0.121:4000/v1/category/getCategory')
+            setCategory(resp.data.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        getAllProduct()
+        getAllCategory()
+    
     })
     
     return(
