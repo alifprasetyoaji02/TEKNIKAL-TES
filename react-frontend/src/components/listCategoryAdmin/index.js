@@ -19,10 +19,10 @@ const ListCategoryAdmin = (props) => {
             const formData = new FormData()
             formData.append('id',id)
         
-            axios.post('http://192.168.0.121:4000/v1/products/deleteProduct',formData,{"Content-Type": "multipart/form-data" })
+            axios.post('http://192.168.0.121:4000/v1/category/deleteCategory',formData,{"Content-Type": "multipart/form-data" })
             .then(result => {
                 console.log(result.data)
-                history.push('/admin')
+                history.push('/admin/category')
             })
             .catch(err => console.log(err))
           }
