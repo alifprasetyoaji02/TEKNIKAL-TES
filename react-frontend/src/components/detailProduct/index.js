@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import axios from 'axios'
 import { useCart } from 'react-use-cart';
@@ -75,7 +75,10 @@ const DetailProduct = (props) => {
           console.log(err)
         }
     }
-    getDetailProduct()
+    useEffect(() => {
+      getDetailProduct()
+
+    },[])
 
     return(
         <Container style={{marginLeft:'10%',marginRight:'10%'}}>

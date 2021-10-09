@@ -36,7 +36,7 @@ const Home = () => {
         getAllProduct()
         getAllCategory()
     
-    })
+    },[])
     
     return(
         <div>

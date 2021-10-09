@@ -71,7 +71,7 @@ const EditCategory = (props) => {
         }    
     })
     .catch(err => console.log(err))
-},)
+},[])
 
   const uploadImages = (e) => {
     const file = e.target.files[0]

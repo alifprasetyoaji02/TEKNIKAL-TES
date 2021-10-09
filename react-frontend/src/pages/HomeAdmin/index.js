@@ -25,7 +25,7 @@ const HomeAdmin = () => {
       
         getAllProduct()
 
-    })
+    },[])
     
     return(
         <div>

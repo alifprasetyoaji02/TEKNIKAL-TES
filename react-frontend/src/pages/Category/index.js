@@ -24,7 +24,7 @@ const Category = () => {
       
         getAllCategory()
 
-    })
+    },[])
     
     return(
         <div>
