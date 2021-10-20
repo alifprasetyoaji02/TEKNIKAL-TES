@@ -1,7 +1,8 @@
 
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
-
+const jwt = require('jsonwebtoken')
+const privateKey = "$2b$10$ehug.w.4asdasEHnmtyj394rZUugasdasd/1231y8jyBasdasdjQM1Kz/HWhfdow/x/T012p1cW"
 
 exports.register = (req, res, next) => {
 
@@ -91,9 +92,15 @@ exports.login = (req, res, next) => {
                 data:null
             })
         } else{
+            
+            var token = jwt.sign({
+                data:result
+            }, privateKey)
+
             res.status(200).json({
                 message: 'Login Berhasil',
-                data: result
+                data: result,
+                token:token
             })
         }
     }).catch(err => {

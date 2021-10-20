@@ -7,41 +7,64 @@ exports.insertCart = (req, res, next) =>{
     const date = req.body.date
 
     const products = req.body.products
-  
+    const newvalues= { 
+        $set: {
+            date: date, 
+            products: JSON.parse(products),
+
+        }
+    }
+
     console.log(JSON.parse(products))
 
-    cart.count().then(counts =>{
+    const data = 
+    cart.find({userId:userId}).then(response => { 
 
-        const addCart = new cart({
+        console.log("Get Response : ",response)
+        if(response.length === 0){
 
-            id:counts+1,
-            userId:userId,
-            date:date,
-            products:JSON.parse(products),
+            cart.count().then(counts =>{
 
-        })
-    
-        console.log(addCart);
-    
-        addCart.save().then(result => {
-            res.status(201).json({
-                message:'Berhasil tambah product ke cart',
-                data:result
+                const addCart = new cart({
+        
+                    id:counts+1,
+                    userId:userId,
+                    date:date,
+                    products:JSON.parse(products),
+        
+                })
+            
+                console.log(addCart);
+            
+                addCart.save().then(result => {
+                    res.status(201).json({
+                        message:'Berhasil tambah product ke cart',
+                        data:result
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        
+            });
+        } else{
+             
+            cart.updateOne({userId:userId},newvalues).then(result =>{
+                res.status(201).json({
+                    message:'Data berhasil diupdate',
+                    data:result
+                })
             })
-        })
-        .catch(err => {
-            console.log(err)
-        })
+            
+        }
 
-    });
+    })
 
 }
 
 exports.getCartByUserId = (req, res, next) => {
 
-    const userId = req.body.userId
-
-    cart.find({userId:userId}).then(result => { 
+    cart.find({userId:req.params.userId}).then(result => { 
         res.status(201).json({
             message:'Data berhasil diperoleh',
             data:result

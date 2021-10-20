@@ -5,6 +5,6 @@ const Router = express.Router()
 const cartController = require('../controllers/Cart')
 
 Router.post('/addCart',cartController.insertCart);
-Router.post('/getCart',cartController.getCartByUserId);
-
+Router.get('/getCart/:userId',cartController.getCartByUserId);
+ 
 module.exports = Router;

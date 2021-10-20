@@ -1,6 +1,8 @@
 const product = require('../models/Product')
 const path = require('path')
 const fs = require('fs')
+const jwt = require('jsonwebtoken')
+const privateKey = "$2b$10$ehug.w.4asdasEHnmtyj394rZUugasdasd/1231y8jyBasdasdjQM1Kz/HWhfdow/x/T012p1cW"
 
 exports.getAllProducts = (req, res, next) => {
     product.find().then(result => {
@@ -65,45 +67,53 @@ exports.updateProduct = (req, res, next) => {
     const title = req.body.title
     const price = req.body.price
     const description = req.body.description
-    const category = req.body.category
-    const image = req.file.path
+    const category = req.body.category    
     const id = req.body.id
+    const token = req.body.token
 
-    console.log(title)
+    var decoded = jwt.verify(token, privateKey);
+    console.log(decoded)
 
-    product.findById(id).then(post => {
+    if(decoded){
+        product.findById(id).then(post => {
         
-        if(!post){
+            if(!post){
+                res.status(401).json({
+                    message:'Data tidak ditemukan',
+                    data:null
+                })
+            }
+    
+            post.title = title
+            post.price = price
+            post.description = description
+            post.category = category
+            if(req.file){
+                post.image = req.file.path
+            }
+    
+            return post.save()
+        })
+        .then(result => {
+            res.status(201).json({
+                message:'Data berhasil diupdate',
+                data:result
+            })
+        })
+        .catch(err => {
             res.status(401).json({
                 message:'Data tidak ditemukan',
                 data:null
             })
-        }
-
-        post.title = title
-        post.price = price
-        post.description = description
-        post.category = category
-        if(req.file){
-            post.image = image
-        }
-
-        return post.save()
-    })
-    .then(result => {
-        res.status(201).json({
-            message:'Data berhasil diupdate',
-            data:result
+            next()
         })
-    })
-    .catch(err => {
-        console.log(err)
+    } else{
         res.status(401).json({
-            message:'Data tidak ditemukan',
+            message:'Data tidak bisa diakses',
             data:null
         })
-        next()
-    })
+    }
+ 
 }
 
 exports.deleteProduct = (req, res, next) => {
